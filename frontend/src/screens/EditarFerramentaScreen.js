@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { View, TextInput, Button, StyleSheet, ScrollView, Alert } from "react-native";
+import { ScrollView, StyleSheet, Alert } from "react-native";
 import api from "../services/api";
+import InputField from "../components/InputField";
+import PrimaryButton from "../components/PrimaryButton";
+import colors from "../theme/colors";
 
 export default function EditarFerramentaScreen({ route, navigation }) {
   const { id } = route.params;
@@ -22,8 +25,7 @@ export default function EditarFerramentaScreen({ route, navigation }) {
 
   async function carregar() {
     try {
-      const resposta = await api.get(`/${id}`);
-      const f = resposta.data;
+      const f = (await api.get(`/${id}`)).data;
 
       setForm({
         codigo: f.codigo,
@@ -38,7 +40,7 @@ export default function EditarFerramentaScreen({ route, navigation }) {
       });
 
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível carregar os dados.");
+      Alert.alert("Erro", "Não foi possível carregar.");
     }
   }
 
@@ -51,22 +53,18 @@ export default function EditarFerramentaScreen({ route, navigation }) {
         garantiaMeses: Number(form.garantiaMeses),
       });
 
-      Alert.alert("Sucesso", "Ferramenta atualizada com sucesso.");
+      Alert.alert("Sucesso", "Alterações salvas.");
       navigation.goBack();
 
     } catch (error) {
-      let mensagem = "Falha ao atualizar.";
+      let msg = "Falha ao atualizar.";
 
-      if (error.response?.data?.message) {
-        mensagem = error.response.data.message;
-      }
-      else if (error.response?.data?.errors) {
-        const erros = error.response.data.errors;
-        mensagem = Object.values(erros).join("\n");
+      if (error.response?.data?.errors) {
+        msg = Object.values(error.response.data.errors).join("\n");
       }
 
-      Alert.alert("Erro", mensagem);
-      console.log("Erro detalhado:", error.response?.data || error);
+      Alert.alert("Erro", msg);
+      console.log("Erro:", error.response?.data || error);
     }
   }
 
@@ -76,16 +74,16 @@ export default function EditarFerramentaScreen({ route, navigation }) {
 
   return (
     <ScrollView style={styles.container}>
-      <TextInput placeholder="Código" style={styles.input} value={form.codigo} onChangeText={(v) => atualizarCampo("codigo", v)} />
-      <TextInput placeholder="Nome" style={styles.input} value={form.nome} onChangeText={(v) => atualizarCampo("nome", v)} />
-      <TextInput placeholder="Categoria" style={styles.input} value={form.categoria} onChangeText={(v) => atualizarCampo("categoria", v)} />
-      <TextInput placeholder="Descrição" style={styles.input} value={form.descricao} onChangeText={(v) => atualizarCampo("descricao", v)} />
-      <TextInput placeholder="Quantidade" keyboardType="numeric" style={styles.input} value={form.quantidade} onChangeText={(v) => atualizarCampo("quantidade", v)} />
-      <TextInput placeholder="Preço" keyboardType="numeric" style={styles.input} value={form.preco} onChangeText={(v) => atualizarCampo("preco", v)} />
-      <TextInput placeholder="Fornecedor" style={styles.input} value={form.fornecedor} onChangeText={(v) => atualizarCampo("fornecedor", v)} />
-      <TextInput placeholder="Garantia Meses" keyboardType="numeric" style={styles.input} value={form.garantiaMeses} onChangeText={(v) => atualizarCampo("garantiaMeses", v)} />
+      <InputField icon="barcode" placeholder="Código" value={form.codigo} onChangeText={(v) => atualizarCampo("codigo", v)} />
+      <InputField icon="hammer" placeholder="Nome" value={form.nome} onChangeText={(v) => atualizarCampo("nome", v)} />
+      <InputField icon="albums" placeholder="Categoria" value={form.categoria} onChangeText={(v) => atualizarCampo("categoria", v)} />
+      <InputField icon="document-text" placeholder="Descrição" value={form.descricao} onChangeText={(v) => atualizarCampo("descricao", v)} />
+      <InputField icon="cube" placeholder="Quantidade" keyboardType="numeric" value={form.quantidade} onChangeText={(v) => atualizarCampo("quantidade", v)} />
+      <InputField icon="cash" placeholder="Preço" keyboardType="numeric" value={form.preco} onChangeText={(v) => atualizarCampo("preco", v)} />
+      <InputField icon="business" placeholder="Fornecedor" value={form.fornecedor} onChangeText={(v) => atualizarCampo("fornecedor", v)} />
+      <InputField icon="time" placeholder="Garantia (meses)" keyboardType="numeric" value={form.garantiaMeses} onChangeText={(v) => atualizarCampo("garantiaMeses", v)} />
 
-      <Button title="Salvar Alterações" onPress={salvar} />
+      <PrimaryButton title="Salvar Alterações" onPress={salvar} />
     </ScrollView>
   );
 }
@@ -93,12 +91,6 @@ export default function EditarFerramentaScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 12,
+    backgroundColor: colors.background,
   },
 });

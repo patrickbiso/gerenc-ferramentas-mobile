@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Alert, ScrollView } from "react-native";
+import { ScrollView, StyleSheet, Alert } from "react-native";
 import api from "../services/api";
+import InputField from "../components/InputField";
+import PrimaryButton from "../components/PrimaryButton";
+import colors from "../theme/colors";
 
 export default function CriarFerramentaScreen({ navigation }) {
   const [form, setForm] = useState({
@@ -32,33 +35,29 @@ export default function CriarFerramentaScreen({ navigation }) {
       navigation.goBack();
 
     } catch (error) {
-      let mensagem = "Falha ao cadastrar.";
+      let msg = "Falha ao cadastrar.";
 
-      if (error.response?.data?.message) {
-        mensagem = error.response.data.message;
-      }
-      else if (error.response?.data?.errors) {
-        const erros = error.response.data.errors;
-        mensagem = Object.values(erros).join("\n");
+      if (error.response?.data?.errors) {
+        msg = Object.values(error.response.data.errors).join("\n");
       }
 
-      Alert.alert("Erro", mensagem);
+      Alert.alert("Erro", msg);
       console.log("Erro detalhado:", error.response?.data || error);
     }
   }
 
   return (
     <ScrollView style={styles.container}>
-      <TextInput placeholder="Código (F001)" style={styles.input} onChangeText={(v) => atualizarCampo("codigo", v)} />
-      <TextInput placeholder="Nome" style={styles.input} onChangeText={(v) => atualizarCampo("nome", v)} />
-      <TextInput placeholder="Categoria" style={styles.input} onChangeText={(v) => atualizarCampo("categoria", v)} />
-      <TextInput placeholder="Descrição" style={styles.input} onChangeText={(v) => atualizarCampo("descricao", v)} />
-      <TextInput placeholder="Quantidade" style={styles.input} keyboardType="numeric" onChangeText={(v) => atualizarCampo("quantidade", v)} />
-      <TextInput placeholder="Preço" style={styles.input} keyboardType="numeric" onChangeText={(v) => atualizarCampo("preco", v)} />
-      <TextInput placeholder="Fornecedor" style={styles.input} onChangeText={(v) => atualizarCampo("fornecedor", v)} />
-      <TextInput placeholder="Garantia (meses)" style={styles.input} keyboardType="numeric" onChangeText={(v) => atualizarCampo("garantiaMeses", v)} />
+      <InputField icon="barcode" placeholder="Código (F001)" onChangeText={(v) => atualizarCampo("codigo", v)} />
+      <InputField icon="hammer" placeholder="Nome" onChangeText={(v) => atualizarCampo("nome", v)} />
+      <InputField icon="albums" placeholder="Categoria" onChangeText={(v) => atualizarCampo("categoria", v)} />
+      <InputField icon="document-text" placeholder="Descrição" onChangeText={(v) => atualizarCampo("descricao", v)} />
+      <InputField icon="cube" placeholder="Quantidade" keyboardType="numeric" onChangeText={(v) => atualizarCampo("quantidade", v)} />
+      <InputField icon="cash" placeholder="Preço" keyboardType="numeric" onChangeText={(v) => atualizarCampo("preco", v)} />
+      <InputField icon="business" placeholder="Fornecedor" onChangeText={(v) => atualizarCampo("fornecedor", v)} />
+      <InputField icon="time" placeholder="Garantia (meses)" keyboardType="numeric" onChangeText={(v) => atualizarCampo("garantiaMeses", v)} />
 
-      <Button title="Salvar" onPress={salvar} />
+      <PrimaryButton title="Salvar" onPress={salvar} />
     </ScrollView>
   );
 }
@@ -66,13 +65,6 @@ export default function CriarFerramentaScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    marginBottom: 12,
-    borderRadius: 8,
-    fontSize: 16,
+    backgroundColor: colors.background,
   },
 });

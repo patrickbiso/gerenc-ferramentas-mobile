@@ -1,9 +1,16 @@
 export default {
-  primary: "#1e88e5",
-  secondary: "#42a5f5",
-  background: "#f5f5f5",
-  text: "#333",
-  card: "#ffffff",
-  danger: "#e53935",
-  success: "#43a047"
+  primary: "#2E7D32",
+  secondary: "#81C784",
+
+  background: "#F4F7F4",
+  card: "#FFFFFF",
+
+  text: "#1A1A1A",
+  textMedium: "#555",
+  textLight: "#888",
+
+  border: "#DDE2DD",
+
+  danger: "#C62828",
+  success: "#2E7D32"
 };
