@@ -1,8 +1,9 @@
-package com.example.gerencferramentas.controller;
+package com.example.gerencferramentasmobile.controller;
 
-import com.example.gerencferramentas.model.Ferramenta;
-import com.example.gerencferramentas.service.FerramentaService;
+import com.example.gerencferramentasmobile.model.Ferramenta;
+import com.example.gerencferramentasmobile.service.FerramentaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,33 +16,48 @@ public class FerramentaController {
     private FerramentaService ferramentaService;
 
     @GetMapping
-    public List<Ferramenta> listar() {
-        return ferramentaService.listarTodas();
+    public ResponseEntity<List<Ferramenta>> listar() {
+        return ResponseEntity.ok(ferramentaService.listarTodas());
     }
 
     @GetMapping("/{id}")
-    public Ferramenta buscarPorId(@PathVariable Long id) {
-        return ferramentaService.buscarPorId(id);
+    public ResponseEntity<Ferramenta> buscarPorId(@PathVariable Long id) {
+        Ferramenta f = ferramentaService.buscarPorId(id);
+        if (f == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(f);
     }
 
     @PostMapping
-    public Ferramenta criar(@RequestBody Ferramenta ferramenta) {
-        return ferramentaService.salvar(ferramenta);
+    public ResponseEntity<Ferramenta> criar(@RequestBody Ferramenta ferramenta) {
+        Ferramenta criada = ferramentaService.salvar(ferramenta);
+        return ResponseEntity.ok(criada);
     }
 
     @PutMapping("/{id}")
-    public Ferramenta atualizar(@PathVariable Long id, @RequestBody Ferramenta ferramenta) {
+    public ResponseEntity<Ferramenta> atualizar(@PathVariable Long id, @RequestBody Ferramenta ferramenta) {
+        Ferramenta existente = ferramentaService.buscarPorId(id);
+        if (existente == null) {
+            return ResponseEntity.notFound().build();
+        }
         ferramenta.setId(id);
-        return ferramentaService.salvar(ferramenta);
+        Ferramenta atualizada = ferramentaService.salvar(ferramenta);
+        return ResponseEntity.ok(atualizada);
     }
 
     @DeleteMapping("/{id}")
-    public void excluir(@PathVariable Long id) {
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        Ferramenta existente = ferramentaService.buscarPorId(id);
+        if (existente == null) {
+            return ResponseEntity.notFound().build();
+        }
         ferramentaService.excluir(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search")
-    public List<Ferramenta> buscar(@RequestParam String nome) {
-        return ferramentaService.buscarPorNome(nome);
+    public ResponseEntity<List<Ferramenta>> buscar(@RequestParam String nome) {
+        return ResponseEntity.ok(ferramentaService.buscarPorNome(nome));
     }
 }
