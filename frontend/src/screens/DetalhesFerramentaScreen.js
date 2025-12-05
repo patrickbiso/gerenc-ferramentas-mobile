@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
 import { View, Text, Button, StyleSheet, Alert, ScrollView } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import api from "../services/api";
 
 export default function DetalhesFerramentaScreen({ route, navigation }) {
@@ -38,9 +39,12 @@ export default function DetalhesFerramentaScreen({ route, navigation }) {
     );
   }
 
-  useEffect(() => {
-    carregar();
-  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      carregar();
+    }, [id])
+  );
 
   if (!ferramenta) {
     return (

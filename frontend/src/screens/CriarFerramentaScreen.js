@@ -32,8 +32,18 @@ export default function CriarFerramentaScreen({ navigation }) {
       navigation.goBack();
 
     } catch (error) {
-      Alert.alert("Erro", "Falha ao cadastrar a ferramenta.");
-      console.log(error);
+      let mensagem = "Falha ao cadastrar.";
+
+      if (error.response?.data?.message) {
+        mensagem = error.response.data.message;
+      }
+      else if (error.response?.data?.errors) {
+        const erros = error.response.data.errors;
+        mensagem = Object.values(erros).join("\n");
+      }
+
+      Alert.alert("Erro", mensagem);
+      console.log("Erro detalhado:", error.response?.data || error);
     }
   }
 

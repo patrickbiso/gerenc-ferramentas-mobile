@@ -37,6 +37,7 @@ public class Ferramenta {
     @Column(nullable = false)
     private String fornecedor;
 
+    @Min(value = 0, message = "A garantia não pode ser negativa")
     private Integer garantiaMeses;
 
     private Boolean ativo = true;

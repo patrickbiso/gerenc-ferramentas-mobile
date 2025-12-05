@@ -36,9 +36,10 @@ public class ApiExceptionHandler {
         body.put("status", HttpStatus.BAD_REQUEST.value());
 
         Map<String, String> errors = new HashMap<>();
-        errors.put("erro", "Violação de integridade de dados");
-        body.put("errors", errors);
 
+        errors.put("codigo", "O código informado já está cadastrado");
+
+        body.put("errors", errors);
         return ResponseEntity.badRequest().body(body);
     }
 }

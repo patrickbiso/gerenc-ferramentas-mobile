@@ -55,8 +55,18 @@ export default function EditarFerramentaScreen({ route, navigation }) {
       navigation.goBack();
 
     } catch (error) {
-      Alert.alert("Erro", "Falha ao atualizar a ferramenta.");
-      console.log(error);
+      let mensagem = "Falha ao atualizar.";
+
+      if (error.response?.data?.message) {
+        mensagem = error.response.data.message;
+      }
+      else if (error.response?.data?.errors) {
+        const erros = error.response.data.errors;
+        mensagem = Object.values(erros).join("\n");
+      }
+
+      Alert.alert("Erro", mensagem);
+      console.log("Erro detalhado:", error.response?.data || error);
     }
   }
 
@@ -66,64 +76,14 @@ export default function EditarFerramentaScreen({ route, navigation }) {
 
   return (
     <ScrollView style={styles.container}>
-      <TextInput
-        placeholder="Código"
-        style={styles.input}
-        value={form.codigo}
-        onChangeText={(v) => atualizarCampo("codigo", v)}
-      />
-
-      <TextInput
-        placeholder="Nome"
-        style={styles.input}
-        value={form.nome}
-        onChangeText={(v) => atualizarCampo("nome", v)}
-      />
-
-      <TextInput
-        placeholder="Categoria"
-        style={styles.input}
-        value={form.categoria}
-        onChangeText={(v) => atualizarCampo("categoria", v)}
-      />
-
-      <TextInput
-        placeholder="Descrição"
-        style={styles.input}
-        value={form.descricao}
-        onChangeText={(v) => atualizarCampo("descricao", v)}
-      />
-
-      <TextInput
-        placeholder="Quantidade"
-        keyboardType="numeric"
-        style={styles.input}
-        value={form.quantidade}
-        onChangeText={(v) => atualizarCampo("quantidade", v)}
-      />
-
-      <TextInput
-        placeholder="Preço"
-        keyboardType="numeric"
-        style={styles.input}
-        value={form.preco}
-        onChangeText={(v) => atualizarCampo("preco", v)}
-      />
-
-      <TextInput
-        placeholder="Fornecedor"
-        style={styles.input}
-        value={form.fornecedor}
-        onChangeText={(v) => atualizarCampo("fornecedor", v)}
-      />
-
-      <TextInput
-        placeholder="Garantia Meses"
-        keyboardType="numeric"
-        style={styles.input}
-        value={form.garantiaMeses}
-        onChangeText={(v) => atualizarCampo("garantiaMeses", v)}
-      />
+      <TextInput placeholder="Código" style={styles.input} value={form.codigo} onChangeText={(v) => atualizarCampo("codigo", v)} />
+      <TextInput placeholder="Nome" style={styles.input} value={form.nome} onChangeText={(v) => atualizarCampo("nome", v)} />
+      <TextInput placeholder="Categoria" style={styles.input} value={form.categoria} onChangeText={(v) => atualizarCampo("categoria", v)} />
+      <TextInput placeholder="Descrição" style={styles.input} value={form.descricao} onChangeText={(v) => atualizarCampo("descricao", v)} />
+      <TextInput placeholder="Quantidade" keyboardType="numeric" style={styles.input} value={form.quantidade} onChangeText={(v) => atualizarCampo("quantidade", v)} />
+      <TextInput placeholder="Preço" keyboardType="numeric" style={styles.input} value={form.preco} onChangeText={(v) => atualizarCampo("preco", v)} />
+      <TextInput placeholder="Fornecedor" style={styles.input} value={form.fornecedor} onChangeText={(v) => atualizarCampo("fornecedor", v)} />
+      <TextInput placeholder="Garantia Meses" keyboardType="numeric" style={styles.input} value={form.garantiaMeses} onChangeText={(v) => atualizarCampo("garantiaMeses", v)} />
 
       <Button title="Salvar Alterações" onPress={salvar} />
     </ScrollView>
