@@ -1,20 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import ListarFerramentasScreen from "./src/screens/ListarFerramentasScreen";
+import CriarFerramentaScreen from "./src/screens/CriarFerramentaScreen";
+import EditarFerramentaScreen from "./src/screens/EditarFerramentaScreen";
+import DetalhesFerramentaScreen from "./src/screens/DetalhesFerramentaScreen";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="ListarFerramentas">
+        
+        <Stack.Screen
+          name="ListarFerramentas"
+          component={ListarFerramentasScreen}
+          options={{ title: "Ferramentas" }}
+        />
+
+        <Stack.Screen
+          name="CriarFerramenta"
+          component={CriarFerramentaScreen}
+          options={{ title: "Adicionar Ferramenta" }}
+        />
+
+        <Stack.Screen
+          name="EditarFerramenta"
+          component={EditarFerramentaScreen}
+          options={{ title: "Editar Ferramenta" }}
+        />
+
+        <Stack.Screen
+          name="DetalhesFerramenta"
+          component={DetalhesFerramentaScreen}
+          options={{ title: "Detalhes" }}
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
