@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.List;
 
 public interface FerramentaRepository extends JpaRepository<Ferramenta, Long> {
+
     Optional<Ferramenta> findByCodigo(String codigo);
 
     List<Ferramenta> findByNomeContainingIgnoreCase(String nome);
-
 }
