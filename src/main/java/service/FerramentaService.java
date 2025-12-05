@@ -1,6 +1,5 @@
 package com.example.gerencferramentas.service;
 
-import com.example.gerencferramentas.exception.NotFoundException;
 import com.example.gerencferramentas.model.Ferramenta;
 import com.example.gerencferramentas.repository.FerramentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +22,14 @@ public class FerramentaService {
     }
 
     public Ferramenta buscarPorId(Long id) {
-        return ferramentaRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Ferramenta não encontrada"));
+        return ferramentaRepository.findById(id).orElse(null);
     }
 
     public void excluir(Long id) {
-        if (!ferramentaRepository.existsById(id)) {
-            throw new NotFoundException("Ferramenta não encontrada");
-        }
         ferramentaRepository.deleteById(id);
     }
 
     public List<Ferramenta> buscarPorNome(String nome) {
         return ferramentaRepository.findByNomeContainingIgnoreCase(nome);
     }
-}
-
 }

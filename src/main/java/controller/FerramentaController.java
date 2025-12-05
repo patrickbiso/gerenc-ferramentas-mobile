@@ -25,6 +25,9 @@ public class FerramentaController {
     @GetMapping("/{id}")
     public ResponseEntity<Ferramenta> buscarPorId(@PathVariable Long id) {
         Ferramenta ferramenta = ferramentaService.buscarPorId(id);
+        if (ferramenta == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(ferramenta);
     }
 
@@ -36,6 +39,11 @@ public class FerramentaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Ferramenta> atualizar(@PathVariable Long id, @Valid @RequestBody Ferramenta ferramenta) {
+        Ferramenta existente = ferramentaService.buscarPorId(id);
+        if (existente == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         ferramenta.setId(id);
         Ferramenta atualizada = ferramentaService.salvar(ferramenta);
         return ResponseEntity.ok(atualizada);
@@ -43,6 +51,11 @@ public class FerramentaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        Ferramenta existente = ferramentaService.buscarPorId(id);
+        if (existente == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         ferramentaService.excluir(id);
         return ResponseEntity.noContent().build();
     }
@@ -52,3 +65,4 @@ public class FerramentaController {
         return ResponseEntity.ok(ferramentaService.buscarPorNome(nome));
     }
 }
+
