@@ -1,7 +1,7 @@
-package com.example.gerencferramentasmobile.controller;
+package com.example.gerencferramentas.controller;
 
-import com.example.gerencferramentasmobile.model.Ferramenta;
-import com.example.gerencferramentasmobile.service.FerramentaService;
+import com.example.gerencferramentas.model.Ferramenta;
+import com.example.gerencferramentas.service.FerramentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
