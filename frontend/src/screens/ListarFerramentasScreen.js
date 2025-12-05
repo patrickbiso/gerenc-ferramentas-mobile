@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
 import { View, FlatList, Button, StyleSheet } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import api from "../services/api";
 import FerramentaItem from "../components/FerramentaItem";
 
@@ -8,16 +9,22 @@ export default function ListarFerramentasScreen({ navigation }) {
 
   async function carregar() {
     try {
-      const resposta = await api.get("/");
+      const resposta = await api.get(""); 
+      console.log("Resposta da API:", resposta.data);
+
       setFerramentas(resposta.data);
     } catch (error) {
       console.log("Erro ao carregar:", error.message);
     }
   }
 
-  useEffect(() => {
-    carregar();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      carregar();
+    }, [])
+  );
+
+  console.log("Estado ferramentas:", ferramentas);
 
   return (
     <View style={styles.container}>

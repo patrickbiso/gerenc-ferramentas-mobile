@@ -21,7 +21,7 @@ export default function CriarFerramentaScreen({ navigation }) {
 
   async function salvar() {
     try {
-      await api.post("/", {
+      await api.post("", {
         ...form,
         quantidade: Number(form.quantidade),
         preco: Number(form.preco),
